@@ -1,5 +1,8 @@
 <?php
 
+use Crwlr\Html2Text\DomDocumentFactory;
+use Crwlr\Html2Text\Exceptions\InvalidHtmlException;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -39,7 +42,60 @@
 |
 */
 
-//function something()
-//{
-//    // ..
-//}
+function helper_dump(mixed $var): void
+{
+    error_log(var_export($var, true));
+}
+
+function helper_dieDump(mixed $var): void
+{
+    error_log(var_export($var, true));
+
+    exit;
+}
+
+function helper_makeDom(string $html): DOMDocument
+{
+    $trimmedLowerCaseHtml = strtolower(trim($html));
+
+    if (!str_starts_with($trimmedLowerCaseHtml, '<!doctype html>') && !str_contains($trimmedLowerCaseHtml, '<html')) {
+        $html = '<!DOCTYPE html><html lang="en"><head><title>test</title></head><body>' . $html . '</body></html>';
+    }
+
+    return DomDocumentFactory::make($html);
+}
+
+/**
+ * @throws Exception
+ */
+function helper_getElementById(string|DOMDocument $dom, string $id): DOMNode
+{
+    if (is_string($dom)) {
+        $dom = helper_makeDom($dom);
+    }
+
+    $element = $dom->getElementById($id);
+
+    if (!$element instanceof DOMNode) {
+        throw new Exception('Element not found');
+    }
+
+    return $element;
+}
+
+/**
+ * @throws InvalidHtmlException|Exception
+ */
+function helper_getFirstTextNodeInId(string|DOMDocument $dom, string $id): DOMNode
+{
+    $el = helper_getElementById($dom, $id);
+
+    foreach ($el->childNodes as $childNode) {
+        /** @var DOMNode $childNode */
+        if ($childNode->nodeType === XML_TEXT_NODE) {
+            return $childNode;
+        }
+    }
+
+    throw new Exception('Text node not found');
+}

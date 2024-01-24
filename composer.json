@@ -1,10 +1,14 @@
 {
-    "name": "crwlr/package-template",
-    "description": "Template repository for new crwlr packages.",
+    "name": "crwlr/html-2-text",
+    "description": "Convert HTML to formatted plain text.",
     "keywords": [
-        "crwlr"
+        "crwlr",
+        "html",
+        "text",
+        "html to text",
+        "converter"
     ],
-    "homepage": "https://www.crwlr.software/packages/...",
+    "homepage": "https://www.crwlr.software/packages/html-2-text",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -15,17 +19,21 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/crwlrsoft/.../issues",
-        "source": "https://github.com/crwlrsoft/...",
-        "docs": "https://www.crwlr.software/packages/..."
+        "issues": "https://github.com/crwlrsoft/html-2-text/issues",
+        "source": "https://github.com/crwlrsoft/html-2-text",
+        "docs": "https://www.crwlr.software/packages/html-2-text"
     },
     "autoload": {
         "psr-4": {
-            "Crwlr\\PackageTemplate\\": "src/"
+            "Crwlr\\Html2Text\\": "src/"
         }
     },
     "require": {
-        "php": "^8.1"
+        "php": "^8.1",
+        "ext-dom": "*",
+        "masterminds/html5": "^2.8",
+        "ext-libxml": "*",
+        "ext-iconv": "*"
     },
     "require-dev": {
         "pestphp/pest": "^2.19",

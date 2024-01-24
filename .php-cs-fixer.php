@@ -13,5 +13,6 @@ return $config->setFinder($finder)
         '@PER-CS' => true,
         'strict_param' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'no_unused_imports' => true,
     ])
     ->setRiskyAllowed(true);
