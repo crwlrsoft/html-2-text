@@ -3,6 +3,7 @@
 namespace Crwlr\Html2Text\NodeConverters;
 
 use Crwlr\Html2Text\Aggregates\DomNodeAndPrecedingText;
+use Crwlr\Html2Text\Utils;
 use DOMNode;
 use Exception;
 
@@ -46,7 +47,7 @@ abstract class ListConverter extends AbstractBlockElementWithDefaultMarginConver
                         );
 
                         $text .= $this->indent(
-                            $this->getListItemStart($listItemNumber) . $textToAdd . PHP_EOL,
+                            $this->getListItemStart($listItemNumber) . ltrim($textToAdd) . PHP_EOL,
                             $indentationLevel,
                         );
                     }
@@ -84,12 +85,16 @@ abstract class ListConverter extends AbstractBlockElementWithDefaultMarginConver
         $nestedListingText = $listItemStart;
 
         foreach ($bulletPoint->childNodes as $childNode) {
+            if (Utils::isEmptyTextNode($childNode)) {
+                continue;
+            }
+
             $childNodeAndPrecedingText = new DomNodeAndPrecedingText($childNode, $nestedListingText);
 
             if ($childNode->nodeName === $this->nodeName()) {
                 $nestedListingText .= rtrim($this->getListText($childNodeAndPrecedingText, 1)) . PHP_EOL;
             } else {
-                $nodeText = $this->getNodeText($childNodeAndPrecedingText);
+                $nodeText = $this->getConverter()->getTextFrom($childNode, $nestedListingText);
 
                 if ($nestedListingText !== $listItemStart) {
                     $nestedListingText .= str_repeat(' ', $multiLineIndentation);

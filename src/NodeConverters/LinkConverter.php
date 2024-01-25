@@ -18,16 +18,20 @@ class LinkConverter extends AbstractInlineElementConverter
      */
     public function convert(DomNodeAndPrecedingText $node): string
     {
+        $addText = rtrim(trim($this->getNodeText($node), " \t"));
+
+        if ($addText === '') {
+            return '';
+        }
+
         $href = '';
 
         if ($node->node instanceof DOMElement) {
-            $href = trim($node->node->getAttribute('href'));
+            $href = $node->node->getAttribute('href');
         }
 
         if (!empty($href) && !str_starts_with($href, 'mailto:') && !str_starts_with($href, 'tel:')) {
-            $addText = '[' . $this->getNodeText($node) . '](' . $href . ')';
-        } else {
-            $addText = $this->getNodeText($node);
+            $addText = '[' . $addText . '](' . $href . ')';
         }
 
         return $this->addSpacingBeforeAndAfter($addText, $node->precedingText);

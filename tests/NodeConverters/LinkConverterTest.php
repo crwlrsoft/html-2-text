@@ -53,3 +53,34 @@ it('does not convert a link when href is starting with tel:', function () {
 
     expect($nodeConverter->convert($node))->toBe('09123 456789');
 });
+
+it('trims the link text', function () {
+    $nodeConverter = new LinkConverter();
+
+    $nodeConverter->setConverter(new Html2Text());
+
+    $node = new DomNodeAndPrecedingText(
+        helper_getElementById('<a id="a" href="/foo">  test  </a>', 'a'),
+        'hey',
+    );
+
+    expect($nodeConverter->convert($node))->toBe('[test](/foo)');
+});
+
+it('does not trim line breaks at the start but at the end', function () {
+    $nodeConverter = new LinkConverter();
+
+    $nodeConverter->setConverter(new Html2Text());
+
+    $node = new DomNodeAndPrecedingText(
+        helper_getElementById('<a id="a" href="/foo"><br>test<br>foo<br>  </a>', 'a'),
+        'ho',
+    );
+
+    expect($nodeConverter->convert($node))
+        ->toBe(<<<TEXT
+        [
+        test
+        foo](/foo)
+        TEXT);
+});

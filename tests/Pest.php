@@ -99,3 +99,34 @@ function helper_getFirstTextNodeInId(string|DOMDocument $dom, string $id): DOMNo
 
     throw new Exception('Text node not found');
 }
+
+function helper_compareStringCharByChar(string $string1, string $string2): void
+{
+    $charNameHelper = function (string $char): string {
+        if ($char === PHP_EOL) {
+            return "linebreak";
+        } elseif ($char === ' ') {
+            return "space";
+        }
+
+        return $char;
+    };
+
+    $identical = true;
+
+    foreach (mb_str_split($string1) as $index => $char) {
+        if ($string2[$index] !== $char) {
+            helper_dump($charNameHelper($char) . ' ❌ ' . $charNameHelper($string2[$index]));
+
+            $identical = false;
+        } else {
+            helper_dump($charNameHelper($char) . ' 👍🏻');
+        }
+    }
+
+    if ($identical) {
+        helper_dump('The two strings are identical!');
+    } else {
+        helper_dump('The two strings are different');
+    }
+}

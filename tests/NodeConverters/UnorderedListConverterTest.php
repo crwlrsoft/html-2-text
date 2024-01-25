@@ -115,3 +115,62 @@ it('correctly converts list elements containing a block element', function () {
 
     expect($nodeConverter->convert($node))->toBe($expectedText);
 });
+
+it('ignores empty text nodes', function () {
+    $nodeConverter = new UnorderedListConverter();
+
+    $nodeConverter->setConverter(new Html2Text());
+
+    $html = <<<HTML
+        <ul id="a">
+            <li>
+                <a href="https://www.crwlr.software/blog">Blog</a>
+                <ul>
+                    <li>Something</li>
+                </ul>
+            </li>
+            <li>Contact</li>
+        </ul>
+        HTML;
+
+    $node = new DomNodeAndPrecedingText(helper_getElementById($html, 'a'), 'hi');
+
+    $expectedText = <<<TEXT
+
+
+        * [Blog](https://www.crwlr.software/blog)
+          * Something
+        * Contact
+
+
+        TEXT;
+
+    expect($nodeConverter->convert($node))->toBe($expectedText);
+});
+
+it('left trims content in list items', function () {
+    $nodeConverter = new UnorderedListConverter();
+
+    $nodeConverter->setConverter(new Html2Text());
+
+    $html = <<<HTML
+        <ul id="a">
+            <li>
+                Hi <a href="https://www.crwlr.software/blog">link</a> <br> test <span>foo</span>
+            </li>
+        </ul>
+        HTML;
+
+    $node = new DomNodeAndPrecedingText(helper_getElementById($html, 'a'), 'hi');
+
+    $expectedText = <<<TEXT
+
+
+        * Hi [link](https://www.crwlr.software/blog)
+          test foo
+
+
+        TEXT;
+
+    expect($nodeConverter->convert($node))->toBe($expectedText);
+});

@@ -49,3 +49,21 @@ it('applies the indentation size set in the converter instance (Html2Text)', fun
 
         TEXT);
 });
+
+it('correctly converts contained elements', function () {
+    $nodeConverter = new BlockquoteConverter();
+
+    $node = new DomNodeAndPrecedingText(
+        helper_getElementById('<blockquote id="a">foo <a href="/foo">link</a> bar</blockquote>', 'a'),
+        'hi',
+    );
+
+    expect($nodeConverter->convert($node))
+        ->toBe(<<<TEXT
+
+
+          foo [link](/foo) bar
+
+
+        TEXT);
+});

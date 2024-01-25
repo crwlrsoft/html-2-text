@@ -9,8 +9,8 @@ use Crwlr\Html2Text\NodeConverters\AbstractBlockElementWithDefaultMarginConverte
 use Crwlr\Html2Text\NodeConverters\AbstractNodeConverter;
 
 test(
-    'when a converter (Html2Text instance) is not set, the getNodeText() method uses Utils::getNodeText() as a ' .
-    'fallback to get an element\'s text',
+    'when a converter (Html2Text instance) is not set, the getNodeText() method creates a default Html2Text instance' .
+    'to get an element\'s text',
     function () {
         $nodeConverter = new class () extends AbstractNodeConverter {
             public function nodeName(): string
@@ -48,7 +48,17 @@ test(
 
         $node = new DomNodeAndPrecedingText($node, '');
 
-        expect($nodeConverter->convert($node))->toBe('textitemitem2par');
+        expect($nodeConverter->convert($node))
+            ->toBe(<<<TEXT
+            text
+
+            * item
+            * item2
+
+            par
+
+
+            TEXT);
     }
 );
 

@@ -28,6 +28,11 @@ abstract class AbstractNodeConverter
         $this->converter = $converter;
     }
 
+    protected function getConverter(): Html2Text
+    {
+        return !$this->converter ? new Html2Text() : $this->converter;
+    }
+
     /**
      * @throws Exception
      */
@@ -37,8 +42,7 @@ abstract class AbstractNodeConverter
             return Utils::getNodeText($node->node);
         }
 
-        return $this->converter?->getTextFrom($node->node->childNodes, $node->precedingText) ??
-            Utils::getNodeText($node->node);
+        return $this->getConverter()->getTextFrom($node->node->childNodes, $node->precedingText);
     }
 
     protected function getIndendationSize(): int

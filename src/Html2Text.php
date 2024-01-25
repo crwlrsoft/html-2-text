@@ -211,23 +211,29 @@ class Html2Text
     }
 
     /**
-     * @param DOMNodeList<DOMNode> $nodeList
+     * @param DOMNodeList<DOMNode>|DOMNode $nodeOrNodeList
      * @param string $precedingText
      * @return string
      * @throws Exception
      */
-    public function getTextFrom(DOMNodeList $nodeList, string $precedingText = ''): string
+    public function getTextFrom(DOMNode|DOMNodeList $nodeOrNodeList, string $precedingText = ''): string
     {
         $text = '';
 
-        foreach ($nodeList as $node) {
-            if ($this->isSkipElement($node)) {
-                continue;
+        if ($nodeOrNodeList instanceof DOMNodeList) {
+            foreach ($nodeOrNodeList as $node) {
+                if ($this->isSkipElement($node)) {
+                    continue;
+                }
+
+                $converter = $this->getConverter($node);
+
+                $text .= $converter->convert(new DomNodeAndPrecedingText($node, empty($text) ? $precedingText : $text));
             }
+        } elseif (!$this->isSkipElement($nodeOrNodeList)) {
+            $converter = $this->getConverter($nodeOrNodeList);
 
-            $converter = $this->getConverter($node);
-
-            $text .= $converter->convert(new DomNodeAndPrecedingText($node, empty($text) ? $precedingText : $text));
+            $text .= $converter->convert(new DomNodeAndPrecedingText($nodeOrNodeList, $precedingText));
         }
 
         return $text;
