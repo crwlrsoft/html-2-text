@@ -10,40 +10,46 @@ This easy-to-use package helps you to convert HTML to formatted plain text.
 use Crwlr\Html2Text\Html2Text;
 
 $html = <<<HTML
-<script>console.log('test');</script>
-<style>#app { background-color: #fff; }</style>
-<article>
-    <h1>Article Headline</h1>
-    <h2>A Subheading</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Example website title</title></head>
+<body>
+    <script>console.log('test');</script>
+    <style>#app { background-color: #fff; }</style>
+    <article>
+        <h1>Article Headline</h1>
+        <h2>A Subheading</h2>
 
-    <p>some text.</p>
+        <p>some text.</p>
 
-    <ul>
-        <li>list item</li>
-        <li>another list item</li>
-        <li>and one more
-            <ul>
-                <li>second level
-                    <ul>
-                        <li>third level</li>
-                    </ul>
-                </li>
-            </ul>
-        </li>
-    </ul>
+        <ul>
+            <li>list item</li>
+            <li>another list item</li>
+            <li>and one more
+                <ul>
+                    <li>second level
+                        <ul>
+                            <li>third level</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
 
-    <table>
-        <thead>
-        <tr><th>column 1</th><th>column 2</th><th>column 3</th></tr>
-        </thead>
-        <tbody>
-        <tr><td>value 1</td><td>value 2</td><td>value 3</td></tr>
-        <tr><td>value 1</td><td colspan="2">value 2 + 3</td></tr>
-        <tr><td colspan="2">value 1 and 2</td><td>value 3</td></tr>
-        <tr><td>value 1</td><td>value 2</td><td>value 3</td></tr>
-        </tbody>
-    </table>
-</article>
+        <table>
+            <thead>
+            <tr><th>column 1</th><th>column 2</th><th>column 3</th></tr>
+            </thead>
+            <tbody>
+            <tr><td>value 1</td><td>value 2</td><td>value 3</td></tr>
+            <tr><td>value 1</td><td colspan="2">value 2 + 3</td></tr>
+            <tr><td colspan="2">value 1 and 2</td><td>value 3</td></tr>
+            <tr><td>value 1</td><td>value 2</td><td>value 3</td></tr>
+            </tbody>
+        </table>
+    </article>
+</body>
+</html>
 HTML;
 
 $text = Html2Text::convert($html);

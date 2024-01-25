@@ -9,7 +9,7 @@ use DOMElement;
 it('gets the text from a DOMNode', function () {
     $document = DomDocumentFactory::make(<<<HTML
         <!DOCTYPE html>
-        <html lang="de">
+        <html lang="en">
         <head>
         <title>test</title>
         </head>

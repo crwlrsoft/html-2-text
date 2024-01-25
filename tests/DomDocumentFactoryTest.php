@@ -8,7 +8,7 @@ use DOMDocument;
 it('creates a DOMDocument object from an HTML string', function () {
     $html = <<<HTML
         <!DOCTYPE html>
-        <html lang="de"><head>
+        <html lang="en"><head>
         <title>test</title>
         </head>
         <body id="page">
