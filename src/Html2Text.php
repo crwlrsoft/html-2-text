@@ -11,6 +11,8 @@ use Crwlr\Html2Text\NodeConverters\DescriptionListConverter;
 use Crwlr\Html2Text\NodeConverters\FallbackBlockElementConverter;
 use Crwlr\Html2Text\NodeConverters\FallbackBlockElementWithDefaultMarginConverter;
 use Crwlr\Html2Text\NodeConverters\FallbackInlineElementConverter;
+use Crwlr\Html2Text\NodeConverters\HeadlineConverter;
+use Crwlr\Html2Text\NodeConverters\LinkConverter;
 use Crwlr\Html2Text\NodeConverters\OrderedListConverter;
 use Crwlr\Html2Text\NodeConverters\StrongConverter;
 use Crwlr\Html2Text\NodeConverters\TableConverter;
@@ -133,6 +135,13 @@ class Html2Text
             'dl' => DescriptionListConverter::class,
             'strong' => StrongConverter::class,
             'b' => StrongConverter::class,
+            'a' => LinkConverter::class,
+            'h1' => HeadlineConverter::class,
+            'h2' => HeadlineConverter::class,
+            'h3' => HeadlineConverter::class,
+            'h4' => HeadlineConverter::class,
+            'h5' => HeadlineConverter::class,
+            'h6' => HeadlineConverter::class,
         ];
     }
 

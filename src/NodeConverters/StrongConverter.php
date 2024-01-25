@@ -3,6 +3,7 @@
 namespace Crwlr\Html2Text\NodeConverters;
 
 use Crwlr\Html2Text\Aggregates\DomNodeAndPrecedingText;
+use Exception;
 
 class StrongConverter extends AbstractInlineElementConverter
 {
@@ -11,6 +12,9 @@ class StrongConverter extends AbstractInlineElementConverter
         return 'strong';
     }
 
+    /**
+     * @throws Exception
+     */
     public function convert(DomNodeAndPrecedingText $node): string
     {
         $addText = strtoupper($this->getNodeText($node));

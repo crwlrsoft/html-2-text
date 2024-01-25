@@ -12,7 +12,7 @@ use Crwlr\Html2Text\Html2Text;
 $html = <<<HTML
 <!DOCTYPE html>
 <html lang="en">
-<head><title>Example website title</title></head>
+<head><title>Example Website Title</title></head>
 <body>
     <script>console.log('test');</script>
     <style>#app { background-color: #fff; }</style>
@@ -20,7 +20,7 @@ $html = <<<HTML
         <h1>Article Headline</h1>
         <h2>A Subheading</h2>
 
-        <p>some text.</p>
+        <p>Some text containing <a href="https://www.crwl.io">a link</a>.</p>
 
         <ul>
             <li>list item</li>
@@ -57,11 +57,11 @@ $text = Html2Text::convert($html);
 
 __The resulting text:__
 ```bash
-Article Headline
+# Article Headline
 
-A Subheading
+## A Subheading
 
-some text.
+Some text containing [a link](https://www.crwl.io).
 
 * list item
 * another list item

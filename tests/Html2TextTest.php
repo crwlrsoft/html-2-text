@@ -45,15 +45,15 @@ it('correctly converts the all known tags example HTML file', function () {
         ->toContain('SVG Text')
         ->not()
         ->toContain(PHP_EOL . PHP_EOL . PHP_EOL) // more than two consecutive line breaks
-        ->toContain('Hello World!')
-        ->toContain('And hello all the other planets!')
+        ->toContain('# Hello World!')
+        ->toContain('## And hello all the other planets!')
         ->toContain('John Doe' . PHP_EOL . 'Box 564, Disneyland' . PHP_EOL . 'USA' . PHP_EOL . 'email')
         ->toContain(<<<TEXT
-        Article Headline
+        ## Article Headline
 
         some article text
 
-        A Subheading
+        ### A Subheading
 
         TEXT)
         ->toContain(<<<TEXT
@@ -97,7 +97,7 @@ it('correctly converts the all known tags example HTML file', function () {
         Owlman
           A giant owl-like creature.
         DL)
-        ->toContain('Some paragraph with STRONG and B tags and a link.');
+        ->toContain('Some paragraph with STRONG and B tags and [a link](https://www.example.com).');
 });
 
 test('you can add a custom converter for a particular tag', function () {
