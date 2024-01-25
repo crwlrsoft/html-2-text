@@ -97,7 +97,7 @@ it('correctly converts the all known tags example HTML file', function () {
         Owlman
           A giant owl-like creature.
         DL)
-        ->toContain('Some paragraph with strong and b tags and a link.');
+        ->toContain('Some paragraph with STRONG and B tags and a link.');
 });
 
 test('you can add a custom converter for a particular tag', function () {

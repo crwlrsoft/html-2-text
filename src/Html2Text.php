@@ -12,6 +12,7 @@ use Crwlr\Html2Text\NodeConverters\FallbackBlockElementConverter;
 use Crwlr\Html2Text\NodeConverters\FallbackBlockElementWithDefaultMarginConverter;
 use Crwlr\Html2Text\NodeConverters\FallbackInlineElementConverter;
 use Crwlr\Html2Text\NodeConverters\OrderedListConverter;
+use Crwlr\Html2Text\NodeConverters\StrongConverter;
 use Crwlr\Html2Text\NodeConverters\TableConverter;
 use Crwlr\Html2Text\NodeConverters\UnorderedListConverter;
 use DOMDocument;
@@ -130,6 +131,8 @@ class Html2Text
             'blockquote' => BlockquoteConverter::class,
             'table' => TableConverter::class,
             'dl' => DescriptionListConverter::class,
+            'strong' => StrongConverter::class,
+            'b' => StrongConverter::class,
         ];
     }
 
