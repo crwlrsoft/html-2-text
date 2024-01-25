@@ -80,40 +80,6 @@ class Html2Text
         'video',
     ];
 
-    //    /**
-    //     * @var string[]
-    //     */
-    //    private array $inlineElements = [
-    //        'a',
-    //        'abbr',
-    //        'acronym',
-    //        'b',
-    //        'bdo',
-    //        'big',
-    //        'button',
-    //        'cite',
-    //        'code',
-    //        'dfn',
-    //        'em',
-    //        'i',
-    //        'img',
-    //        'kbd',
-    //        'label',
-    //        'map',
-    //        'object',
-    //        'output',
-    //        'q',
-    //        'samp',
-    //        'small',
-    //        'span',
-    //        'strong',
-    //        'sub',
-    //        'sup',
-    //        'time',
-    //        'tt',
-    //        'var',
-    //    ];
-
     /**
      * @var array<string, string>
      */
