@@ -310,7 +310,10 @@ class Html2Text
 
     private function normalizeWhitespace(string $text): string
     {
-        $newLineFixedText = preg_replace('/\n{3}\n*/m', "\n\n", $text);
+        // Regex description: match sequences with more than two consecutive line breaks.
+        // Between them there can be spaces, but nothing else.
+        // And the sequence has to end with a line break, so we don't remove indentation.
+        $newLineFixedText = preg_replace('/(?:\n\s*){2}\n+/m', "\n\n", $text);
 
         if ($newLineFixedText === null) {
             return $text;

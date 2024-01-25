@@ -36,16 +36,14 @@ it('gets the text from a DOMNode', function () {
     expect($text)->toBe(' Lorem ipsum dolor sit amet ');
 });
 
-it('tells if a node has only text node children', function () {
-    $html = '<div id="el-1">hello</div><ul id="list"><li>item</li><li>item</li></ul>';
+it('tells you if a node is a text node', function () {
+    $textNode = helper_getFirstTextNodeInId('<p id="a">Hello world</p>', 'a');
 
-    $el1 = helper_getElementById($html, 'el-1');
+    expect(Utils::isTextNode($textNode))->toBeTrue();
 
-    expect(Utils::hasOnlyTextNodeChildren($el1))->toBeTrue();
+    $divNode = helper_getElementById('<div id="a">foo bar</div>', 'a');
 
-    $list = helper_getElementById($html, 'list');
-
-    expect(Utils::hasOnlyTextNodeChildren($list))->toBeFalse();
+    expect(Utils::isTextNode($divNode))->toBeFalse();
 });
 
 it('tells you if something is an empty text node', function () {
@@ -63,6 +61,35 @@ it('tells you if something is an empty text node', function () {
     $paragraphTextNode = helper_getFirstTextNodeInId($document, 'paragraph');
 
     expect(Utils::isEmptyTextNode($paragraphTextNode))->toBeFalse();
+});
+
+it('tells you if something is a non empty text node', function () {
+    $document = helper_makeDom(<<<HTML
+        <div id="element">
+
+            <p id="paragraph">test</p>
+        </div>
+        HTML);
+
+    $paragraphTextNode = helper_getFirstTextNodeInId($document, 'paragraph');
+
+    expect(Utils::isNonEmptyTextNode($paragraphTextNode))->toBeTrue();
+
+    $textNode = helper_getFirstTextNodeInId($document, 'element');
+
+    expect(Utils::isNonEmptyTextNode($textNode))->toBeFalse();
+});
+
+it('tells if a node has only text node children', function () {
+    $html = '<div id="el-1">hello</div><ul id="list"><li>item</li><li>item</li></ul>';
+
+    $el1 = helper_getElementById($html, 'el-1');
+
+    expect(Utils::hasOnlyTextNodeChildren($el1))->toBeTrue();
+
+    $list = helper_getElementById($html, 'list');
+
+    expect(Utils::hasOnlyTextNodeChildren($list))->toBeFalse();
 });
 
 it('returns a line break if the preceding text does not end with a line break', function () {

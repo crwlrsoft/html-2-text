@@ -43,6 +43,8 @@ it('correctly converts the all known tags example HTML file', function () {
         ->toContain('SVG Title')
         ->not()
         ->toContain('SVG Text')
+        ->not()
+        ->toContain(PHP_EOL . PHP_EOL . PHP_EOL) // more than two consecutive line breaks
         ->toContain('Hello World!')
         ->toContain('And hello all the other planets!')
         ->toContain('John Doe' . PHP_EOL . 'Box 564, Disneyland' . PHP_EOL . 'USA' . PHP_EOL . 'email')
@@ -53,11 +55,20 @@ it('correctly converts the all known tags example HTML file', function () {
 
         A Subheading
 
+        TEXT)
+        ->toContain(<<<TEXT
+
         * list item
         * another list item
         * and one more list item
+        * test nesting
           * second level
+          * asdf
             * third level
+          test
+
+        TEXT)
+        ->toContain(<<<TEXT
 
         1. ordered list item
         2. item
@@ -68,6 +79,7 @@ it('correctly converts the all known tags example HTML file', function () {
             1. one
             2. two
             3. three
+
         TEXT)
         ->toContain(PHP_EOL . '  This is text inside' . PHP_EOL . '  a blockquote tag')
         ->toContain(<<<TABLE

@@ -20,8 +20,7 @@ class Utils
     public static function hasOnlyTextNodeChildren(DOMNode $node): bool
     {
         foreach ($node->childNodes as $childNode) {
-            /** @var DOMNode $childNode */
-            if ($childNode->nodeType !== XML_TEXT_NODE) {
+            if (!self::isTextNode($childNode)) {
                 return false;
             }
         }
@@ -29,9 +28,19 @@ class Utils
         return true;
     }
 
+    public static function isTextNode(DOMNode $node): bool
+    {
+        return $node->nodeType === XML_TEXT_NODE;
+    }
+
     public static function isEmptyTextNode(DOMNode $node): bool
     {
-        return $node->nodeType === XML_TEXT_NODE && trim($node->textContent) === '';
+        return self::isTextNode($node) && trim($node->textContent) === '';
+    }
+
+    public static function isNonEmptyTextNode(DOMNode $node): bool
+    {
+        return self::isTextNode($node) && trim($node->textContent) !== '';
     }
 
     public static function returnLinebreakIfPrecedingTextDoesNotEndWith(string $text): string
