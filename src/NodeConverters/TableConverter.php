@@ -165,6 +165,6 @@ class TableConverter extends AbstractBlockElementConverter
 
     protected function removeLineBreaksFromTdText(string $text): string
     {
-        return preg_replace('/\s+/', ' ', $text) ?? $text;
+        return trim(preg_replace('/\s+/', ' ', $text) ?? $text);
     }
 }

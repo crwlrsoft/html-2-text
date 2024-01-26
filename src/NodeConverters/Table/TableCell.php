@@ -10,6 +10,6 @@ class TableCell
         public readonly int $colspan,
         public readonly string $text
     ) {
-        $this->length = strlen($this->text);
+        $this->length = mb_strlen($this->text);
     }
 }

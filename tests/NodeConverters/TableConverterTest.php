@@ -3,13 +3,10 @@
 namespace tests\NodeConverters;
 
 use Crwlr\Html2Text\Aggregates\DomNodeAndPrecedingText;
-use Crwlr\Html2Text\Html2Text;
 use Crwlr\Html2Text\NodeConverters\TableConverter;
 
 it('correctly converts a table', function () {
     $nodeConverter = new TableConverter();
-
-    $nodeConverter->setConverter(new Html2Text());
 
     $html = <<<HTML
         <table id="a">
@@ -35,8 +32,6 @@ it('correctly converts a table', function () {
 
 it('correctly converts a table with thead and tbody sections', function () {
     $nodeConverter = new TableConverter();
-
-    $nodeConverter->setConverter(new Html2Text());
 
     $html = <<<HTML
         <table id="a">
@@ -68,8 +63,6 @@ it('correctly converts a table with thead and tbody sections', function () {
 it('correctly sizes the columns', function () {
     $nodeConverter = new TableConverter();
 
-    $nodeConverter->setConverter(new Html2Text());
-
     $html = <<<HTML
         <table id="a">
         <thead>
@@ -100,8 +93,6 @@ it('correctly sizes the columns', function () {
 it('correctly handles cells with a colspan attribute', function () {
     $nodeConverter = new TableConverter();
 
-    $nodeConverter->setConverter(new Html2Text());
-
     $html = <<<HTML
         <table id="a">
         <thead>
@@ -131,8 +122,6 @@ it('correctly handles cells with a colspan attribute', function () {
 
 it('correctly handles colspan columns, when their content is longer than the separate columns combined', function () {
     $nodeConverter = new TableConverter();
-
-    $nodeConverter->setConverter(new Html2Text());
 
     $html = <<<HTML
         <table id="a">
@@ -166,8 +155,6 @@ it('correctly handles colspan columns, when their content is longer than the sep
 it('handles columns containing line breaks, by removing the line breaks', function () {
     $nodeConverter = new TableConverter();
 
-    $nodeConverter->setConverter(new Html2Text());
-
     $html = <<<HTML
         <table id="a">
         <tr><th>Column1</th><th>Column2</th><th>Column3</th><th>Column4</th><th>Column5</th></tr>
@@ -184,6 +171,62 @@ it('handles columns containing line breaks, by removing the line breaks', functi
         | Column1 | Column2 | Column3        | Column4 | Column5 |
         | value1  | value2  | value3 foo bar | value4  | value5  |
         | value1  | value2  | value3         | value4  | value5  |
+
+        TEXT);
+});
+
+test('sizing table columns works correctly with € character in the table data', function () {
+    $nodeConverter = new TableConverter();
+
+    $html = <<<HTML
+<table id="a">
+<thead>
+<tr><th></th><th>XS</th><th>S</th><th>M</th><th>L</th></tr>
+</thead>
+<tbody>
+<tr>
+    <td>Requests/Tag</td>
+    <td>5.000</td>
+    <td>15.000</td>
+    <td>60.000</td>
+    <td>250.000</td>
+</tr>
+<tr>
+    <td>Speicherplatz</td><td>1 GB</td><td>5 GB</td><td>20 GB</td><td>50 GB</td>
+</tr>
+<tr data-period="monthly">
+    <td>Preis inkl. USt.</td>
+    <td>
+        € 36<br>
+        <span>pro Monat</span>
+    </td>
+    <td>
+        € 72<br>
+        <span>pro Monat</span>
+    </td>
+    <td>
+        € 240<br>
+        <span>pro Monat</span>
+    </td>
+    <td>
+        € 720<br>
+        <span>pro Monat</span>
+    </td>
+</tr>
+</tbody>
+</table>
+HTML;
+
+    $node = new DomNodeAndPrecedingText(helper_getElementById($html, 'a'), 'hi');
+
+    expect($nodeConverter->convert($node))
+        ->toBe(<<<TEXT
+
+        |                  | XS             | S              | M               | L               |
+        | ---------------- | -------------- | -------------- | --------------- | --------------- |
+        | Requests/Tag     | 5.000          | 15.000         | 60.000          | 250.000         |
+        | Speicherplatz    | 1 GB           | 5 GB           | 20 GB           | 50 GB           |
+        | Preis inkl. USt. | € 36 pro Monat | € 72 pro Monat | € 240 pro Monat | € 720 pro Monat |
 
         TEXT);
 });
