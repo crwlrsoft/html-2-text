@@ -5,6 +5,8 @@ namespace tests;
 use Crwlr\Html2Text\Aggregates\DomNodeAndPrecedingText;
 use Crwlr\Html2Text\Html2Text;
 use Crwlr\Html2Text\NodeConverters\AbstractBlockElementWithDefaultMarginConverter;
+use Crwlr\Html2Text\NodeConverters\BrConverter;
+use Crwlr\Html2Text\NodeConverters\FallbackBlockElementConverter;
 use Exception;
 
 class SpanConverter extends AbstractBlockElementWithDefaultMarginConverter
@@ -143,6 +145,30 @@ test('you can add a converter by just passing a class name', function () {
     !
     TEXT);
 });
+
+test('the getNodeConverter() method returns the registered node converter instance', function () {
+    $converter = new Html2Text();
+
+    $node = helper_getElementById('<br id="a">', 'a');
+
+    $nodeConverter = $converter->getNodeConverter($node);
+
+    expect($nodeConverter)->toBeInstanceOf(BrConverter::class);
+});
+
+test(
+    'if there is no separate node converter class for a nodeName, the getNodeConverter() method returns a fallback ' .
+    'node converter',
+    function () {
+        $converter = new Html2Text();
+
+        $node = helper_getElementById('<noscript id="a">test</noscript>', 'a');
+
+        $nodeConverter = $converter->getNodeConverter($node);
+
+        expect($nodeConverter)->toBeInstanceOf(FallbackBlockElementConverter::class);
+    }
+);
 
 it('removes a node converter for a particular tag', function () {
     $converter = new Html2Text();

@@ -6,6 +6,67 @@ use DOMNode;
 
 class Utils
 {
+    /**
+     * @var string[]
+     */
+    protected static array $blockElementsWithDefaultMargin = [
+        'dl',
+        'h1',
+        'h2',
+        'h3',
+        'h4',
+        'h5',
+        'h6',
+        'ol',
+        'p',
+        'ul',
+    ];
+
+    /**
+     * @var string[]
+     */
+    protected static array $blockElements = [
+        'address',
+        'article',
+        'aside',
+        'blockquote',
+        'canvas',
+        'dd',
+        'div',
+        'dt',
+        'fieldset',
+        'figcaption',
+        'figure',
+        'footer',
+        'form',
+        'header',
+        'hr',
+        'li',
+        'main',
+        'nav',
+        'noscript',
+        'pre',
+        'section',
+        'table',
+        'tfoot',
+        'video',
+    ];
+
+    public static function isBlockElementWithDefaultMargin(DOMNode $node): bool
+    {
+        return in_array($node->nodeName, self::$blockElementsWithDefaultMargin, true);
+    }
+
+    public static function isBlockElement(DOMNode $node): bool
+    {
+        return self::isBlockElementWithDefaultMargin($node) || in_array($node->nodeName, self::$blockElements, true);
+    }
+
+    public static function isInlineElement(DOMNode $node): bool
+    {
+        return !self::isBlockElementWithDefaultMargin($node) && !self::isBlockElement($node);
+    }
+
     public static function getNodeText(DOMNode $node): string
     {
         $text = preg_replace('/\s+/', ' ', $node->textContent);

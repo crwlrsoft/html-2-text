@@ -11,6 +11,8 @@ abstract class AbstractNodeConverter
 {
     protected ?Html2Text $converter = null;
 
+    protected bool $isChildOfPreTag = false;
+
     abstract public function nodeName(): string;
 
     abstract public function isBlockElement(): bool;
@@ -39,6 +41,10 @@ abstract class AbstractNodeConverter
     protected function getNodeText(DomNodeAndPrecedingText $node): string
     {
         if (Utils::hasOnlyTextNodeChildren($node->node)) {
+            if ($this->isChildOfPreTag) {
+                return $node->node->textContent;
+            }
+
             return Utils::getNodeText($node->node);
         }
 

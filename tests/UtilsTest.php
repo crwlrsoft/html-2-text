@@ -6,6 +6,48 @@ use Crwlr\Html2Text\DomDocumentFactory;
 use Crwlr\Html2Text\Utils;
 use DOMElement;
 
+it('tells you if a DOMNode instance is a block element with default margin (in the browser)', function () {
+    $node = helper_getElementById('<ul id="a"><li>item</li></ul>', 'a');
+
+    expect(Utils::isBlockElementWithDefaultMargin($node))->toBeTrue();
+
+    $node = helper_getElementById('<div id="a">test</div>', 'a');
+
+    expect(Utils::isBlockElementWithDefaultMargin($node))->toBeFalse();
+
+    $node = helper_getElementById('<span id="a">foo</span>', 'a');
+
+    expect(Utils::isBlockElementWithDefaultMargin($node))->toBeFalse();
+});
+
+it('tells you if a DOMNode instance is a block element', function () {
+    $node = helper_getElementById('<ul id="a"><li>item</li></ul>', 'a');
+
+    expect(Utils::isBlockElement($node))->toBeTrue();
+
+    $node = helper_getElementById('<div id="a">test</div>', 'a');
+
+    expect(Utils::isBlockElement($node))->toBeTrue();
+
+    $node = helper_getElementById('<span id="a">foo</span>', 'a');
+
+    expect(Utils::isBlockElement($node))->toBeFalse();
+});
+
+it('tells you if a DOMNode instance is an inline element', function () {
+    $node = helper_getElementById('<ul id="a"><li>item</li></ul>', 'a');
+
+    expect(Utils::isInlineElement($node))->toBeFalse();
+
+    $node = helper_getElementById('<div id="a">test</div>', 'a');
+
+    expect(Utils::isInlineElement($node))->toBeFalse();
+
+    $node = helper_getElementById('<span id="a">foo</span>', 'a');
+
+    expect(Utils::isInlineElement($node))->toBeTrue();
+});
+
 it('gets the text from a DOMNode', function () {
     $document = DomDocumentFactory::make(<<<HTML
         <!DOCTYPE html>

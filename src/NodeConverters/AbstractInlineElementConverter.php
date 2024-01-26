@@ -21,6 +21,10 @@ abstract class AbstractInlineElementConverter extends AbstractNodeConverter
 
     protected function addSpacingBeforeAndAfter(string $textToAdd, string $precedingText): string
     {
+        if ($this->isChildOfPreTag) {
+            return $textToAdd;
+        }
+
         if ($precedingText === '') {
             return ltrim($textToAdd);
         }

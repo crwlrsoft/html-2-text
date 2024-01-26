@@ -105,3 +105,25 @@ it('does not trim the text on the left side when the preceding text ends with so
 
     expect($nodeConverter->convert($nodeAndPrecedingText))->toBe(' yep ');
 });
+
+it('does not trim the text when the isChildOfPreTag property is true', function () {
+    $nodeConverter = new class () extends AbstractInlineElementConverter {
+        protected bool $isChildOfPreTag = true;
+
+        public function nodeName(): string
+        {
+            return 'span';
+        }
+
+        public function convert(DomNodeAndPrecedingText $node): string
+        {
+            return $this->addSpacingBeforeAndAfter($this->getNodeText($node), $node->precedingText);
+        }
+    };
+
+    $spanEl = helper_getElementById('<span id="hi">   hey   </span>', 'hi');
+
+    $nodeAndPrecedingText = new DomNodeAndPrecedingText($spanEl, '-');
+
+    expect($nodeConverter->convert($nodeAndPrecedingText))->toBe('   hey   ');
+});

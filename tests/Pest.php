@@ -115,12 +115,26 @@ function helper_compareStringCharByChar(string $string1, string $string2): void
     $identical = true;
 
     foreach (mb_str_split($string1) as $index => $char) {
-        if ($string2[$index] !== $char) {
+        if (!isset($string2[$index])) {
+            helper_dump($charNameHelper($char) . ' - ❌ second string already ended');
+        } elseif ($string2[$index] !== $char) {
             helper_dump($charNameHelper($char) . ' ❌ ' . $charNameHelper($string2[$index]));
 
             $identical = false;
         } else {
             helper_dump($charNameHelper($char) . ' 👍🏻');
+        }
+    }
+
+    if (strlen($string1) < strlen($string2)) {
+        helper_dump('first string already ended');
+
+        if (isset($index)) {
+            for ($i = $index; $i < strlen($string2) - 1; $i++) {
+                $char = $string2[$i];
+
+                helper_dump($charNameHelper($char) . ' - ❌ first string already ended');
+            }
         }
     }
 

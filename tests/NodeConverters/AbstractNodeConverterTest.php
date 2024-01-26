@@ -195,3 +195,45 @@ it('indents text', function () {
                     baz
         TEXT);
 });
+
+test(
+    'when the isChildOfPreTag property is set to true, the getNodeText() method does not trim and reduce spaces',
+    function () {
+        $nodeConverter = new class () extends AbstractBlockElementWithDefaultMarginConverter {
+            protected bool $isChildOfPreTag = true;
+
+            public function nodeName(): string
+            {
+                return 'div';
+            }
+
+            public function isBlockElement(): bool
+            {
+                return true;
+            }
+
+            public function isBlockElementWithDefaultMargin(): bool
+            {
+                return false;
+            }
+
+            public function isInlineElement(): bool
+            {
+                return false;
+            }
+
+            public function convert(DomNodeAndPrecedingText $node): string
+            {
+                return $this->addSpacingBeforeAndAfter($this->getNodeText($node), $node->precedingText);
+            }
+        };
+
+        $node = new DomNodeAndPrecedingText(
+            helper_getElementById('<div id="a">' . PHP_EOL . '   b   ' . PHP_EOL . '  </div>', 'a'),
+            '',
+        );
+
+        expect($nodeConverter->convert($node))
+            ->toBe(PHP_EOL . PHP_EOL . PHP_EOL . '   b   ' . PHP_EOL . '  ' . PHP_EOL . PHP_EOL);
+    }
+);

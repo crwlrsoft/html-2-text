@@ -14,6 +14,7 @@ use Crwlr\Html2Text\NodeConverters\FallbackInlineElementConverter;
 use Crwlr\Html2Text\NodeConverters\HeadlineConverter;
 use Crwlr\Html2Text\NodeConverters\LinkConverter;
 use Crwlr\Html2Text\NodeConverters\OrderedListConverter;
+use Crwlr\Html2Text\NodeConverters\PreConverter;
 use Crwlr\Html2Text\NodeConverters\StrongConverter;
 use Crwlr\Html2Text\NodeConverters\TableConverter;
 use Crwlr\Html2Text\NodeConverters\UnorderedListConverter;
@@ -41,46 +42,6 @@ class Html2Text
     ];
 
     /**
-     * @var string[]
-     */
-    private array $blockElements = [
-        'address',
-        'article',
-        'aside',
-        'blockquote',
-        'canvas',
-        'dd',
-        'div',
-        'dl',
-        'dt',
-        'fieldset',
-        'figcaption',
-        'figure',
-        'footer',
-        'form',
-        'h1',
-        'h2',
-        'h3',
-        'h4',
-        'h5',
-        'h6',
-        'header',
-        'hr',
-        'li',
-        'main',
-        'nav',
-        'noscript',
-        'ol',
-        'p',
-        'pre',
-        'section',
-        'table',
-        'tfoot',
-        'ul',
-        'video',
-    ];
-
-    /**
      * @var array<string, string>
      */
     protected array $converters = [];
@@ -93,21 +54,22 @@ class Html2Text
     public function __construct(readonly public int $indentationSize = self::DEFAULT_INDENTATION_SIZE)
     {
         $this->converters = [
-            'ul' => UnorderedListConverter::class,
-            'ol' => OrderedListConverter::class,
-            'br' => BrConverter::class,
-            'blockquote' => BlockquoteConverter::class,
-            'table' => TableConverter::class,
-            'dl' => DescriptionListConverter::class,
-            'strong' => StrongConverter::class,
-            'b' => StrongConverter::class,
             'a' => LinkConverter::class,
+            'b' => StrongConverter::class,
+            'blockquote' => BlockquoteConverter::class,
+            'br' => BrConverter::class,
+            'dl' => DescriptionListConverter::class,
             'h1' => HeadlineConverter::class,
             'h2' => HeadlineConverter::class,
             'h3' => HeadlineConverter::class,
             'h4' => HeadlineConverter::class,
             'h5' => HeadlineConverter::class,
             'h6' => HeadlineConverter::class,
+            'ol' => OrderedListConverter::class,
+            'pre' => PreConverter::class,
+            'strong' => StrongConverter::class,
+            'table' => TableConverter::class,
+            'ul' => UnorderedListConverter::class,
         ];
     }
 
@@ -226,12 +188,12 @@ class Html2Text
                     continue;
                 }
 
-                $converter = $this->getConverter($node);
+                $converter = $this->getNodeConverter($node);
 
                 $text .= $converter->convert(new DomNodeAndPrecedingText($node, empty($text) ? $precedingText : $text));
             }
         } elseif (!$this->isSkipElement($nodeOrNodeList)) {
-            $converter = $this->getConverter($nodeOrNodeList);
+            $converter = $this->getNodeConverter($nodeOrNodeList);
 
             $text .= $converter->convert(new DomNodeAndPrecedingText($nodeOrNodeList, $precedingText));
         }
@@ -239,17 +201,10 @@ class Html2Text
         return $text;
     }
 
-    private function isSkipElement(DOMNode $node): bool
-    {
-        return $node->nodeType === XML_COMMENT_NODE ||
-            Utils::isEmptyTextNode($node) ||
-            in_array($node->nodeName, $this->skipElements, true);
-    }
-
     /**
      * @throws Exception
      */
-    private function getConverter(DOMNode $node): AbstractNodeConverter
+    public function getNodeConverter(DOMNode $node): AbstractNodeConverter
     {
         if (isset($this->converters[$node->nodeName])) {
             if (isset($this->converterInstances[$node->nodeName])) {
@@ -269,9 +224,9 @@ class Html2Text
             return $converter;
         }
 
-        if ($this->isBlockElementWithMargin($node)) {
+        if (Utils::isBlockElementWithDefaultMargin($node)) {
             $converter = new FallbackBlockElementWithDefaultMarginConverter();
-        } elseif ($this->isBlockElement($node)) {
+        } elseif (Utils::isBlockElement($node)) {
             $converter = new FallbackBlockElementConverter();
         } else {
             $converter = new FallbackInlineElementConverter();
@@ -282,14 +237,11 @@ class Html2Text
         return $converter;
     }
 
-    private function isBlockElement(DOMNode $node): bool
+    private function isSkipElement(DOMNode $node): bool
     {
-        return in_array($node->nodeName, $this->blockElements, true);
-    }
-
-    private function isBlockElementWithMargin(DOMNode $node): bool
-    {
-        return in_array($node->nodeName, ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'], true);
+        return $node->nodeType === XML_COMMENT_NODE ||
+            Utils::isEmptyTextNode($node) ||
+            in_array($node->nodeName, $this->skipElements, true);
     }
 
     private function normalizeWhitespace(string $text): string
