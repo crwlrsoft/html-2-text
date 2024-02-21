@@ -139,13 +139,21 @@ class DomDocumentFactory
         try {
             return mb_encode_numericentity($htmlContent, [0x80, 0x10FFFF, 0, 0x1FFFFF], $charset);
         } catch (Exception|ValueError) {
-            $htmlContent = iconv($charset, 'UTF-8', $htmlContent);
+            try {
+                $htmlContent = iconv($charset, 'UTF-8', $htmlContent);
 
-            if ($htmlContent === false) {
-                throw new Exception('Charset problem');
+                if ($htmlContent === false) {
+                    throw new Exception();
+                }
+
+                $htmlContent = mb_encode_numericentity($htmlContent, [0x80, 0x10FFFF, 0, 0x1FFFFF], 'UTF-8');
+            } catch (Exception|ValueError) {
+                // Swallow those exceptions, because very likely there's a problem like:
+                // the incoming $charset is nonsense, because the regex in the fixCharsetInContent() method
+                // can match strings that aren't actual charset definitions of the document.
             }
 
-            return mb_encode_numericentity($htmlContent, [0x80, 0x10FFFF, 0, 0x1FFFFF], 'UTF-8');
+            return $htmlContent === false ? '' : $htmlContent;
         } finally {
             restore_error_handler();
         }
