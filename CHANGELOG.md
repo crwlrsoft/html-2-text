@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2024-02-21
+### Fixed
+- An issue that occurred when the HTML contains something that looks like a charset definition within a `<script>` block.
+
 ## [0.1.0] - 2024-01-26
 ### Added
 - `Html2Text` class that converts HTML to formatted plain text.
