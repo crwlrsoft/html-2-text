@@ -44,5 +44,5 @@ HTML;
         $document = DomDocumentFactory::make($html);
 
         expect($document)->toBeInstanceOf(DOMDocument::class);
-    }
+    },
 );

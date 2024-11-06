@@ -8,7 +8,7 @@ class TableCell
 
     public function __construct(
         public readonly int $colspan,
-        public readonly string $text
+        public readonly string $text,
     ) {
         $this->length = mb_strlen($this->text);
     }
