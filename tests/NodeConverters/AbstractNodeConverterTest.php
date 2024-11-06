@@ -12,7 +12,7 @@ test(
     'when a converter (Html2Text instance) is not set, the getNodeText() method creates a default Html2Text instance' .
     'to get an element\'s text',
     function () {
-        $nodeConverter = new class () extends AbstractNodeConverter {
+        $nodeConverter = new class extends AbstractNodeConverter {
             public function nodeName(): string
             {
                 return 'div';
@@ -59,13 +59,13 @@ test(
 
 
             TEXT);
-    }
+    },
 );
 
 test(
     'when a converter (Html2Text instance) is set, the getNodeText() method uses it to get an element\'s text',
     function () {
-        $nodeConverter = new class () extends AbstractBlockElementConverter {
+        $nodeConverter = new class extends AbstractBlockElementConverter {
             public function nodeName(): string
             {
                 return 'article';
@@ -115,11 +115,11 @@ test(
 
             text after
             TEXT);
-    }
+    },
 );
 
 it('indents text', function () {
-    $nodeConverter = new class () extends AbstractBlockElementWithDefaultMarginConverter {
+    $nodeConverter = new class extends AbstractBlockElementWithDefaultMarginConverter {
         private int $indentationLevel = 1;
 
         public function nodeName(): string
@@ -199,7 +199,7 @@ it('indents text', function () {
 test(
     'when the isChildOfPreTag property is set to true, the getNodeText() method does not trim and reduce spaces',
     function () {
-        $nodeConverter = new class () extends AbstractBlockElementWithDefaultMarginConverter {
+        $nodeConverter = new class extends AbstractBlockElementWithDefaultMarginConverter {
             protected bool $isChildOfPreTag = true;
 
             public function nodeName(): string
@@ -235,5 +235,5 @@ test(
 
         expect($nodeConverter->convert($node))
             ->toBe(PHP_EOL . PHP_EOL . PHP_EOL . '   b   ' . PHP_EOL . '  ' . PHP_EOL . PHP_EOL);
-    }
+    },
 );

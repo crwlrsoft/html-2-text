@@ -103,7 +103,7 @@ it('correctly converts the all known tags example HTML file', function () {
 });
 
 test('you can add a custom converter for a particular tag', function () {
-    $nodeConverter = new class () extends AbstractBlockElementWithDefaultMarginConverter {
+    $nodeConverter = new class extends AbstractBlockElementWithDefaultMarginConverter {
         public function nodeName(): string
         {
             return 'span';
@@ -167,7 +167,7 @@ test(
         $nodeConverter = $converter->getNodeConverter($node);
 
         expect($nodeConverter)->toBeInstanceOf(FallbackBlockElementConverter::class);
-    }
+    },
 );
 
 it('removes a node converter for a particular tag', function () {

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2024-11-06
+### Fixed
+* Improvements for deprecations in PHP 8.4.
+
 ## [0.1.1] - 2024-02-21
 ### Fixed
 - An issue that occurred when the HTML contains something that looks like a charset definition within a `<script>` block.

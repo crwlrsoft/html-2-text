@@ -23,6 +23,12 @@
         "source": "https://github.com/crwlrsoft/html-2-text",
         "docs": "https://www.crwlr.software/packages/html-2-text"
     },
+    "funding": [
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/otsch"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Crwlr\\Html2Text\\": "src/"
@@ -31,17 +37,17 @@
     "require": {
         "php": "^8.1",
         "ext-dom": "*",
-        "masterminds/html5": "^2.8",
         "ext-libxml": "*",
-        "ext-iconv": "*"
+        "ext-iconv": "*",
+        "masterminds/html5": "^2.8"
     },
     "require-dev": {
-        "pestphp/pest": "^2.19",
+        "pestphp/pest": "^2.19|^3.0",
         "phpstan/phpstan": "^1.10",
-        "friendsofphp/php-cs-fixer": "^3.30"
+        "friendsofphp/php-cs-fixer": "^3.57"
     },
     "scripts": {
-        "test": "@php vendor/bin/pest",
+        "test": "@php vendor/bin/pest --display-warnings --bail",
         "cs": "@php vendor/bin/php-cs-fixer fix -v --dry-run",
         "cs-fix": "@php vendor/bin/php-cs-fixer fix -v",
         "stan": "@php vendor/bin/phpstan analyse -c phpstan.neon",

@@ -81,7 +81,7 @@ class Html2Text
      */
     public static function convert(
         DOMDocument|DOMNodeList|string $html,
-        int $indentationSize = self::DEFAULT_INDENTATION_SIZE
+        int $indentationSize = self::DEFAULT_INDENTATION_SIZE,
     ): string {
         return (new self($indentationSize))->convertHtmlToText($html);
     }
@@ -105,12 +105,12 @@ class Html2Text
 
     public function addConverter(
         string|AbstractNodeConverter $nodeNameOrConverterInstance,
-        string|AbstractNodeConverter $converterClassNameOrInstance = null
+        null|string|AbstractNodeConverter $converterClassNameOrInstance = null,
     ): self {
         if (is_string($nodeNameOrConverterInstance) && $converterClassNameOrInstance === null) {
             throw new InvalidArgumentException(
                 'When the first argument to this Html2Text::addConverter() is a node name, the second one must ' .
-                'eiter be a class name or a AbstractNodeConverter instance.'
+                'eiter be a class name or a AbstractNodeConverter instance.',
             );
         }
 

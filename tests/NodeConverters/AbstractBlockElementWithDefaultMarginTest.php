@@ -7,7 +7,7 @@ use Crwlr\Html2Text\NodeConverters\AbstractBlockElementWithDefaultMarginConverte
 
 function helper_pNodeConverterUsingPrecedingTextAsItsOwn(): AbstractBlockElementWithDefaultMarginConverter
 {
-    return new class () extends AbstractBlockElementWithDefaultMarginConverter {
+    return new class extends AbstractBlockElementWithDefaultMarginConverter {
         public function nodeName(): string
         {
             return 'p';
@@ -22,7 +22,7 @@ function helper_pNodeConverterUsingPrecedingTextAsItsOwn(): AbstractBlockElement
 }
 
 test('the isBlockElementWithDefaultMargin() method returns true, the others false', function () {
-    $instance = new class () extends AbstractBlockElementWithDefaultMarginConverter {
+    $instance = new class extends AbstractBlockElementWithDefaultMarginConverter {
         public function nodeName(): string
         {
             return 'test';
@@ -52,7 +52,7 @@ it(
         $nodeAndPrecedingText = new DomNodeAndPrecedingText($pEl, 'Pew');
 
         expect($nodeConverter->convert($nodeAndPrecedingText))->toBe(PHP_EOL . PHP_EOL . 'Pew' . PHP_EOL . PHP_EOL);
-    }
+    },
 );
 
 it('adds one line break before and after, when previous text and text to add, end with a line break', function () {

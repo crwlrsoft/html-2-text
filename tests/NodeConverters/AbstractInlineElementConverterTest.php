@@ -6,7 +6,7 @@ use Crwlr\Html2Text\Aggregates\DomNodeAndPrecedingText;
 use Crwlr\Html2Text\NodeConverters\AbstractInlineElementConverter;
 
 test('the isInlineElement() method returns true, the others false', function () {
-    $instance = new class () extends AbstractInlineElementConverter {
+    $instance = new class extends AbstractInlineElementConverter {
         public function nodeName(): string
         {
             return 'test';
@@ -27,7 +27,7 @@ test('the isInlineElement() method returns true, the others false', function () 
 });
 
 it('trims the text on the left side when the preceding text is empty', function () {
-    $nodeConverter = new class () extends AbstractInlineElementConverter {
+    $nodeConverter = new class extends AbstractInlineElementConverter {
         public function nodeName(): string
         {
             return 'span';
@@ -47,7 +47,7 @@ it('trims the text on the left side when the preceding text is empty', function 
 });
 
 it('trims the text on the left side when the preceding text ends with a line break', function () {
-    $nodeConverter = new class () extends AbstractInlineElementConverter {
+    $nodeConverter = new class extends AbstractInlineElementConverter {
         public function nodeName(): string
         {
             return 'span';
@@ -67,7 +67,7 @@ it('trims the text on the left side when the preceding text ends with a line bre
 });
 
 it('trims the text on the left side when the preceding text ends with a space', function () {
-    $nodeConverter = new class () extends AbstractInlineElementConverter {
+    $nodeConverter = new class extends AbstractInlineElementConverter {
         public function nodeName(): string
         {
             return 'span';
@@ -87,7 +87,7 @@ it('trims the text on the left side when the preceding text ends with a space', 
 });
 
 it('does not trim the text on the left side when the preceding text ends with something else', function () {
-    $nodeConverter = new class () extends AbstractInlineElementConverter {
+    $nodeConverter = new class extends AbstractInlineElementConverter {
         public function nodeName(): string
         {
             return 'span';
@@ -107,7 +107,7 @@ it('does not trim the text on the left side when the preceding text ends with so
 });
 
 it('does not trim the text when the isChildOfPreTag property is true', function () {
-    $nodeConverter = new class () extends AbstractInlineElementConverter {
+    $nodeConverter = new class extends AbstractInlineElementConverter {
         protected bool $isChildOfPreTag = true;
 
         public function nodeName(): string
