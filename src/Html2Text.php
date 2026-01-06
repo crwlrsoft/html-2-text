@@ -51,7 +51,7 @@ class Html2Text
      */
     protected array $converterInstances = [];
 
-    public function __construct(readonly public int $indentationSize = self::DEFAULT_INDENTATION_SIZE)
+    public function __construct(public readonly int $indentationSize = self::DEFAULT_INDENTATION_SIZE)
     {
         $this->converters = [
             'a' => LinkConverter::class,
@@ -105,7 +105,7 @@ class Html2Text
 
     public function addConverter(
         string|AbstractNodeConverter $nodeNameOrConverterInstance,
-        null|string|AbstractNodeConverter $converterClassNameOrInstance = null,
+        string|AbstractNodeConverter|null $converterClassNameOrInstance = null,
     ): self {
         if (is_string($nodeNameOrConverterInstance) && $converterClassNameOrInstance === null) {
             throw new InvalidArgumentException(
@@ -258,9 +258,7 @@ class Html2Text
         $fixedText = '';
 
         foreach (explode(PHP_EOL, $newLineFixedText) as $line) {
-            if ($line !== null) {
-                $fixedText .= rtrim($line) . PHP_EOL;
-            }
+            $fixedText .= rtrim($line) . PHP_EOL;
         }
 
         return trim($fixedText);
