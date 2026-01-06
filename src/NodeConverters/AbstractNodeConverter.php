@@ -53,7 +53,7 @@ abstract class AbstractNodeConverter
 
     protected function getIndendationSize(): int
     {
-        return $this->converter?->indentationSize ?? Html2Text::DEFAULT_INDENTATION_SIZE;
+        return $this->converter->indentationSize ?? Html2Text::DEFAULT_INDENTATION_SIZE;
     }
 
     protected function indent(string $text, int $indentationLevel = 1): string
